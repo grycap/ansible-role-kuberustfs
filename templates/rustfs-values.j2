@@ -1,0 +1,52 @@
+ingress:
+{% if enable_ingress %}
+  enabled: true
+  traefikAnnotations: {}
+  hosts:
+    - host: {{ public_hostname }}
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    enabled: true
+    certManager:
+      enabled: true
+{% else %}
+  enabled: false
+{% endif %}
+
+gatewayApi:
+{% if enable_httproute %}
+  enabled: true
+  gatewayClass: {{ gateway.class }}
+  hostname: {{ public_hostname }}
+  existingGateway:
+    name: {{ gateway.name }}
+    namespace: {{ gateway.namespace }}
+{% else %}
+  enabled: false
+{% endif %}
+
+storageclass:
+  name: managed-nfs-storage
+secret:
+  rustfs:
+    access_key: {{ rustfs_accesskey }}
+    secret_key: {{ rustfs_secretkey }}
+
+mode:
+  standalone:
+    enabled: true
+
+resources:
+  requests:
+    memory: 600Mi
+
+{% if master_deploy %}
+tolerations:
+- key: node-role.kubernetes.io/control-plane
+  operator: Exists
+  effect: NoSchedule
+nodeSelector:
+  node-role.kubernetes.io/control-plane: ''
+{% endif %}

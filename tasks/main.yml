@@ -1,0 +1,37 @@
+---
+- name: Create values file
+  template:
+    src: rustfs-values.j2
+    dest: /tmp/rustfs-values.yaml
+
+- name: Add RustFS helm repo
+  command: helm repo add rustfs https://charts.rustfs.com
+  environment:
+    KUBECONFIG: "{{ kubeconfig_path }}"
+
+- name: "Update helm repositories"
+  command: helm repo update
+  environment:
+    KUBECONFIG: "{{ kubeconfig_path }}"
+    
+- name: Create rustfs namespace
+  block:
+    - copy: src=rustfs-namespace.yaml dest=/tmp/rustfs-namespace.yaml
+    - command: kubectl apply -f /tmp/rustfs-namespace.yaml
+      environment:
+        KUBECONFIG: "{{ kubeconfig_path }}"
+
+- name: Install (or upgrade) the chart
+  command: helm upgrade rustfs --install rustfs/rustfs --namespace rustfs --create-namespace --values /tmp/rustfs-values.yaml
+  environment:
+    KUBECONFIG: "{{ kubeconfig_path }}"
+
+- name: Download RustFS Client binary
+  unarchive:
+    src: https://github.com/rustfs/cli/releases/download/v{{ rustfs_cli_version }}/rustfs-cli-linux-amd64-gnu-v{{ rustfs_cli_version }}.tar.gz
+    dest: /usr/local/bin
+    remote_src: true
+    include:
+      - rc
+    mode: '0755'
+    creates: /usr/local/bin/rc

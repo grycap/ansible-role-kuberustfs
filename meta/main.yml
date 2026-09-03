@@ -1,0 +1,21 @@
+galaxy_info:
+  author: micafer1@upv.es
+  description: Install RustFS using a Kubernetes Cluster
+  company: GRyCAP
+  license: Apache
+  min_ansible_version: "2.11"
+  platforms:
+  - name: EL
+    versions:
+    - 9
+    - 10
+  - name: Ubuntu
+    versions:
+    - xenial
+    - bionic
+    - focal
+  galaxy_tags:
+    - rustfs
+    - kubernetes
+
+dependencies: []
