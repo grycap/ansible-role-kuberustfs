@@ -1,5 +1,6 @@
 galaxy_info:
   author: micafer1@upv.es
+  role_name: kuberustfs
   description: Install RustFS using a Kubernetes Cluster
   company: GRyCAP
   license: Apache
