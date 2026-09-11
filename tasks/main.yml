@@ -26,6 +26,19 @@
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
 
+- name: Create CORS middleware
+  when: enable_httproute | bool
+  block:
+    - copy: src=middleware.yaml dest=/tmp/middleware.yaml
+    - command: kubectl apply -f /tmp/middleware.yaml
+      environment:
+        KUBECONFIG: "{{ kubeconfig_path }}"
+
+    - name: Add CORS middleware to the RustFS HTTPRoute
+      command: kubectl patch httproute rustfs-route --namespace rustfs --type=json --patch '[{"op":"add","path":"/spec/rules/0/filters","value":[{"extensionRef":{"group":"traefik.io","kind":"Middleware","name":"cors-allow-all"},"type":"ExtensionRef"}]}]'
+      environment:
+        KUBECONFIG: "{{ kubeconfig_path }}"
+
 - name: Download RustFS Client binary
   unarchive:
     src: https://github.com/rustfs/cli/releases/download/v{{ rustfs_cli_version }}/rustfs-cli-linux-amd64-gnu-v{{ rustfs_cli_version }}.tar.gz

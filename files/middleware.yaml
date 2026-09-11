@@ -1,0 +1,19 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: cors-allow-all
+  namespace: rustfs
+spec:
+  headers:
+    accessControlAllowHeaders:
+    - '*'
+    accessControlAllowMethods:
+    - GET
+    - POST
+    - PUT
+    - DELETE
+    - OPTIONS
+    accessControlAllowOriginList:
+    - '*'
+    accessControlMaxAge: 600
+    addVaryHeader: true
