@@ -54,3 +54,7 @@ tolerations:
 nodeSelector:
   node-role.kubernetes.io/control-plane: ''
 {% endif %}
+
+extraEnv:
+  - name: RUSTFS_OUTBOUND_ALLOW_ORIGINS
+    value: "http://oscar.oscar:8080"
