@@ -1,3 +1,5 @@
+# Default image tag for RustFS deployment
+rustfs_image_tag: "latest"
 # Access key credential for object storage and web access
 rustfs_accesskey: 'rustfs'
 # Secret key credential for object storage and web access
