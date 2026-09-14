@@ -22,7 +22,7 @@
         KUBECONFIG: "{{ kubeconfig_path }}"
 
 - name: Install (or upgrade) the chart
-  command: helm upgrade rustfs --install rustfs/rustfs --namespace rustfs --create-namespace --values /tmp/rustfs-values.yaml
+  command: helm upgrade rustfs --install rustfs/rustfs --namespace rustfs --create-namespace --values /tmp/rustfs-values.yaml --version '>=1.0.0-0'
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
 
