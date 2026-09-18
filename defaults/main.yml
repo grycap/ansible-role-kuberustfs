@@ -19,4 +19,4 @@ gateway:
   namespace: traefik
 # Hostname for the ingress (API)
 public_hostname: "rustfs.local"
-rustfs_cli_version: "0.1.32"
+rustfs_cli_version: "0.1.36"
